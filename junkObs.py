@@ -145,6 +145,6 @@ def junkVBS():
                 '\tWScript.Sleep(0)\n'
                 'end sub\n']
 
-    junk = [random.choice(junkList) for x in range(random.randint(64,165))]
+    junk = [random.choice(junkList) for x in range(random.randint(100, 200))]
 
     return junk
