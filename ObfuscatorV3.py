@@ -4,9 +4,9 @@
 Script Name: 	ObfuscatorV3.py
 Author:      	Levi Von Haxor
 Purpose:     	Obfuscate a Python or VBScript file passed 
-			 	      as an argument
-Example:		  python ObfuscatorV3.py -v notavirus.vbs
-Return: 		  obs_notavirus.vbs (This is the payload)
+			 	as an argument
+Example:		python ObfuscatorV3.py -v notavirus.vbs
+Return: 		obs_notavirus.vbs (This is the payload)
 '''
 
 import random
@@ -21,9 +21,12 @@ def obsFile():
 	'''
 	DELIMETERS = ['!','@','#','$','%','^','&','*','-']
 
-	global delimeter 
+	global delimeter
 	
 	delimeter = 5*random.choice(DELIMETERS)
+
+	asciiChars = string.ascii_letters
+	translationChars = asciiChars[::-1]
 	
 	if args['vbscript']:
 		file = args['vbscript']
@@ -43,7 +46,10 @@ def obsFile():
 		with open(file) as f:
 			contents = f.read()
 
-		asciiValues = [str(ord(c)) for c in contents]
+		trTable = contents.maketrans(asciiChars, translationChars)
+		trContents = contents.translate(trTable)
+
+		asciiValues = [str(ord(c)) for c in trContents]
 
 		delContents = [i + delimeter for i in asciiValues]
 		delContents = ''.join(delContents)
@@ -115,24 +121,26 @@ def obsPY(EC):
 	'''
 	Creates the deobfuscation header for a Python file
 	'''
-	
-	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	trigger = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
 
+	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
 	var1 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
 	var2 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
 	var3 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var4 =  "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	
+	var4 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
+	var5 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
+	var6 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
+	var7 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
+
 	file = args['python']
 	with open('obs_' + file, 'a') as f:
+		
 		f.writelines(['import math\n', 'import random\n', 'import string\n', 'import time\n', 'import base64\n'])
-
+        
 		f.writelines(junk)
 		
 		f.write(f"{Encoder} = '{EC}'\n")
 		
-		f.write(f'import os,time\n{var1}={Encoder}.encode("ascii");{var3}=base64.b64decode({var1});{var4}={var3}.decode("ascii");{var2}=[chr(int(i)) for i in {var4}.split("{delimeter}") if i];{trigger}="".join({var2});exec({trigger})\n')
+		f.write(f'import os,time\n{var1}={Encoder}.encode("ascii");{var2}=base64.b64decode({var1});{var3}={var2}.decode("ascii");{var4}=[chr(int(i)) for i in {var3}.split("{delimeter}") if i];{var5}="".join({var4});{var6} = {var5}.maketrans(string.ascii_letters,string.ascii_letters[::-1]);{var7}= {var5}.translate({var6});exec({var7})\n')
 		
 		[f.writelines(junk) for i in range(random.randint(10, 20))]
 			
@@ -164,5 +172,5 @@ def main():
 		obsPY(encContents)
 	
 	
-if __name__ == '__main__': 
+if __name__ == '__main__': # Will only run main() function directly from this module unless explicitly imported from another module
 	main()
