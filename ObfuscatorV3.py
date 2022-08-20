@@ -6,7 +6,7 @@ Author:      	Levi Von Haxor
 Purpose:     	Obfuscate a Python or VBScript file passed 
 			 	as an argument
 Example:		python ObfuscatorV3.py -v notavirus.vbs
-Return: 		obs_notavirus.vbs (This is the obfuscated file)
+Return: 		obs_notavirus.vbs (This is the payload)
 '''
 
 import random
@@ -70,7 +70,7 @@ def obsVBS(EC):
 	file = args['vbscript']
 
 	with open('obs_' + file, 'a') as f:
-		f.write(junk)
+		f.writelines(junk)
 
 		f.write(f'{Encoder} = "{EC}"\n')		
 		
@@ -161,7 +161,7 @@ def main():
 
 	if args['vbscript']:
 
-		junk = "".join(junkVBS())
+		junk = junkVBS()
 
 		obsVBS(encContents)		
 		
