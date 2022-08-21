@@ -111,7 +111,7 @@ def obsVBS(EC):
 				'WScript.Sleep(0)\n',
 				'all_char = all_char & char_of_blob\n',
 				'Next\n',
-                'all_char = StrReverse(all_char)\n' 
+                		'all_char = StrReverse(all_char)\n' 
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n',
