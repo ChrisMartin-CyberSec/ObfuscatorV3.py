@@ -70,7 +70,7 @@ def obsVBS(EC):
 
 	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))    
 
-	with open('obs_' + file, 'a') as f:
+	with open('obs_' + file, 'w') as f:
 		[f.writelines(junk[:round(len(junk)/10)])]
 		random.shuffle(junk)
 
@@ -133,7 +133,7 @@ def obsPY(EC):
 	Encoder, var1,var2, var3, var4, var5, var6, var7 = ["".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15))) for x in range(8)]
 
 	file = args['python']
-	with open('obs_' + file, 'a') as f:
+	with open('obs_' + file, 'w') as f:
 		
 		f.writelines(['import math\n', 'import random\n', 'import string\n', 'import time\n'])
         
