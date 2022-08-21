@@ -34,7 +34,7 @@ def obsFile():
 		with open(file) as f:
 			contents = f.read()
 
-		asciiValues = [str(ord(c)) for c in contents]
+		asciiValues = [str(ord(c)) for c in contents][::-1] # Reverse the contents of the file and convert to ASCII Values
 
 		delContents = [i + delimeter for i in asciiValues]
 
@@ -47,7 +47,7 @@ def obsFile():
 			contents = f.read()
 
 		trTable = contents.maketrans(asciiChars, translationChars)
-		trContents = contents.translate(trTable)
+		trContents = contents.translate(trTable) # Reverse the contents of the file and convert to ASCII Values
 
 		asciiValues = [str(ord(c)) for c in trContents]
 
@@ -65,14 +65,19 @@ def obsVBS(EC):
 	'''
 	Creates the deobfuscation header for a VBScript file
 	'''
-	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-
+    
 	file = args['vbscript']
 
-	with open('obs_' + file, 'a') as f:
-		f.writelines(junk)
+	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))    
 
-		f.write(f'{Encoder} = "{EC}"\n')		
+	with open('obs_' + file, 'a') as f:
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
+
+		f.write(f'{Encoder} = "{EC}"\n')	
+
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)	
 		
 		f.writelines([f'del = "{delimeter}"\n',
 				'WScript.Sleep(0)\n',
@@ -87,7 +92,8 @@ def obsVBS(EC):
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n'])
 		
-		[f.writelines(junk) for i in range(random.randint(5, 15))]
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
 
 		f.writelines([f'length_stuff = ubound({Encoder})-1\n',
 				'WScript.Sleep(0)\n',
@@ -105,48 +111,51 @@ def obsVBS(EC):
 				'WScript.Sleep(0)\n',
 				'all_char = all_char & char_of_blob\n',
 				'Next\n',
+                'all_char = StrReverse(all_char)\n' 
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n',
 				'WScript.Sleep(0)\n',
-				'WScript.Sleep(0)\n',])
+				'WScript.Sleep(0)\n'])
 
-		[f.writelines(junk) for i in range(random.randint(5, 15))]
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
 
 		f.write('executeglobal (all_char)\n')
 
-		[f.writelines(junk) for i in range(random.randint(5, 15))]
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
 	
 
 def obsPY(EC):
 	'''
 	Creates the deobfuscation header for a Python file
-	'''
-
-	Encoder = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var1 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var2 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var3 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var4 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var5 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var6 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
-	var7 = "".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15)))
+	'''    
+	Encoder, var1,var2, var3, var4, var5, var6, var7 = ["".join(random.choices(list(string.ascii_letters), k=random.randint(5, 15))) for x in range(8)]
 
 	file = args['python']
 	with open('obs_' + file, 'a') as f:
 		
-		f.writelines(['import math\n', 'import random\n', 'import string\n', 'import time\n', 'import base64\n'])
+		f.writelines(['import math\n', 'import random\n', 'import string\n', 'import time\n'])
         
-		f.writelines(junk)
-		
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
+
+		f.write('import base64\n')
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
+
 		f.write(f"{Encoder} = '{EC}'\n")
+
+		[f.writelines(junk[:round(len(junk)/10)])]
+		random.shuffle(junk)
 		
 		f.write(f'import os,time\n{var1}={Encoder}.encode("ascii");{var2}=base64.b64decode({var1});{var3}={var2}.decode("ascii");{var4}=[chr(int(i)) for i in {var3}.split("{delimeter}") if i];{var5}="".join({var4});{var6} = {var5}.maketrans(string.ascii_letters,string.ascii_letters[::-1]);{var7}= {var5}.translate({var6});exec({var7})\n')
 		
-		[f.writelines(junk) for i in range(random.randint(10, 20))]
+		[f.writelines(junk[:round(len(junk)/10)])]
 			
 
 def main():
-	global parser, group, args, encContents, junk  
+	global parser, group, args, encContents, junk
 
 	parser = argparse.ArgumentParser(description = 'An obfucation program designed to obfuscate VBScript and Python scripts')
 
