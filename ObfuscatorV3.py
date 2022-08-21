@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 '''
-Script Name: 	ObfuscatorV3.py
-Author:      	Levi Von Haxor
-Purpose:     	Obfuscate a Python or VBScript file passed 
+Script Name: 		ObfuscatorV3.py
+Author:      		Levi Von Haxor
+Purpose:     		Obfuscate a Python or VBScript file passed 
 			 	as an argument
 Example:		python ObfuscatorV3.py -v notavirus.vbs
 Return: 		obs_notavirus.vbs (This is the payload)
