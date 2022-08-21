@@ -6,7 +6,7 @@ Author:      		Levi Von Haxor
 Purpose:     		Obfuscate a Python or VBScript file passed 
 			 	as an argument
 Example:		python ObfuscatorV3.py -v notavirus.vbs
-Return: 		obs_notavirus.vbs (This is the payload)
+Return: 		obs_notavirus.vbs (This is the obfuscated file)
 '''
 
 import random
