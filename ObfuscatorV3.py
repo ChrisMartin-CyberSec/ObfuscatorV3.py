@@ -2,7 +2,7 @@
 
 '''
 Script Name: 	ObfuscatorV3.py
-Author:      	Levi Von Haxor
+Author:      	Levi von Haxor
 Purpose:     	Obfuscate a Python or VBScript file passed 
 		as an argument
 Example:	python ObfuscatorV3.py -v notavirus.vbs
